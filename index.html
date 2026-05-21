@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O-level Biology Matura Oral Prep — NAT 2020 Topics 1–10</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#172033;--muted:#607086;--brand:#1f7a5c;--brand2:#2458a6;--bad:#b91c1c;--good:#15803d;--line:#dbe4ef;--soft:#eaf7f1}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#123c69,#1f7a5c);color:#fff;padding:18px 20px;box-shadow:0 2px 14px #0003}
+header h1{margin:0;font-size:clamp(1.25rem,2.4vw,2rem)}
+header p{margin:.25rem 0 0;color:#e9f7ff}
+.app{display:grid;grid-template-columns:310px 1fr;min-height:calc(100vh - 86px)}
+aside{border-right:1px solid var(--line);background:#fff;padding:14px;position:sticky;top:86px;height:calc(100vh - 86px);overflow:auto}
+main{padding:22px;max-width:1200px;width:100%;margin:0 auto}
+.controls{display:grid;gap:10px;margin-bottom:12px}
+input,select,button,textarea{font:inherit;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;color:var(--ink)}
+button{cursor:pointer;background:var(--brand);color:#fff;border:0;font-weight:700}
+button.secondary{background:#e8eef7;color:#17324d}
+button.bad{background:var(--bad)}
+button.good{background:var(--good)}
+.topicBtn{width:100%;text-align:left;margin:4px 0;padding:10px;border-radius:12px;background:#f4f7fb;color:#172033;border:1px solid transparent}
+.topicBtn.active{background:var(--soft);border-color:#b6e3d2;color:#0f5f46}
+.topicBtn small{display:block;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:0 0 16px;box-shadow:0 6px 20px #18324d0b}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+h2,h3{margin-top:0}
+.badge{display:inline-flex;gap:6px;align-items:center;border-radius:999px;background:#e8eef7;color:#1b3b5a;padding:5px 10px;font-size:.85rem;font-weight:700;margin:2px}
+.source{background:#fff7ed;color:#8a4b0a;border-radius:6px;padding:1px 4px}
+ul{padding-left:1.3rem}li{margin:.35rem 0}
+details{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fbfdff;margin:10px 0}
+summary{cursor:pointer;font-weight:800;color:#123c69}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi div{background:#f4f7fb;border-radius:14px;padding:10px;text-align:center}
+.kpi b{display:block;font-size:1.25rem;color:var(--brand)}
+.flash{min-height:220px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:2px dashed #b8cadf;background:#fbfdff;border-radius:18px;padding:22px}
+.flash .q{font-size:1.25rem;font-weight:850}
+.flash .a{margin-top:16px;color:#123c69;font-weight:650}
+.hidden{display:none}
+.diagram,.topicFigures{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.svgbox,.topicFigure{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px;text-align:center}
+.topicFigures{margin:14px 0 18px}
+.topicFigure{margin:0;text-align:left}
+.topicFigure img{display:block;width:100%;height:310px;object-fit:contain;border-radius:12px;background:#f8fafc}
+.topicFigure figcaption{margin-top:8px;font-size:.85rem;color:var(--muted);line-height:1.35}
+.topicFigure a{color:var(--brand2)}
+.progressbar{height:10px;background:#e5edf6;border-radius:99px;overflow:hidden}
+.progressbar span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),#60a5fa);width:0}
+footer{color:var(--muted);font-size:.9rem;margin-top:28px}
+@media(max-width:850px){.app{grid-template-columns:1fr}aside{position:relative;top:0;height:auto}.grid,.kpi,.diagram{grid-template-columns:1fr}main{padding:14px}.topicFigure img{height:auto;max-height:360px}}
+</style>
+</head>
+<body>
+<header>
+<h1>O-level Biology Matura Oral Prep — Hungarian NAT 2020</h1>
+<p>First half of oral topics: Topics 1–10, A theory + B practical/ecology/experiment tasks.</p>
+</header>
+
+<div class="app">
+<aside>
+<div class="controls">
+<input id="search" placeholder="Search topics, keywords…">
+<select id="mode">
+<option value="learn">Learn mode</option>
+<option value="flash">Flashcards</option>
+<option value="oral">Mock oral exam</option>
+<option value="overview">Overview</option>
+</select>
+<button id="randomBtn" class="secondary">Random topic</button>
+<button id="resetBtn" class="bad">Reset progress</button>
+</div>
+<div class="progressbar"><span id="progBar"></span></div>
+<p><b id="progText">0/20</b> topics marked learned</p>
+<nav id="nav"></nav>
+</aside>
+<main id="main"></main>
+</div>
+
+<footer style="padding:20px">
+Study app generated from the Biology oral exam topic documents. Use it together with your teacher’s instructions and the official Hungarian NAT 2020 requirements.
+</footer>
+
+<script>
+const topics=[
+{id:"1A",src:"Topic 1 exam paper",pts:30,title:"Structure, function, and protection of sensory organs — the eye",figs:[
+["https://upload.wikimedia.org/wikipedia/commons/e/e4/Diagram_showing_the_parts_of_the_eye_CRUK_326.svg","Diagram showing the main parts of the human eye","Human eye anatomy diagram. Image: Cancer Research UK, CC BY-SA 4.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Diagram_showing_the_parts_of_the_eye_CRUK_326.svg","https://creativecommons.org/licenses/by-sa/4.0"]
+],qs:[
+["Describe the eye structure.","Outer layer: sclera for muscle attachment and transparent cornea for refraction/protection. Beneath it: choroid for blood supply/pigmentation and retina for impulse generation. Iris has the pupil. The lens is attached by suspensory ligaments to the ciliary body/muscle. Vitreous humour fills most of the eyeball; aqueous humour fills the anterior cavity."],
+["Explain accommodation.","Bright light: pupil constricts; dim light: pupil dilates. Distant object: ciliary muscle relaxes and lens flattens. Near object: ciliary muscle contracts and lens becomes more convex."],
+["Compare myopia and hypermetropia.","Myopia: good near vision; image forms before the retina; corrected with concave/diverging negative lenses. Hypermetropia: poor near vision; image would form behind the retina; corrected with convex/converging positive lenses."],
+["What is cataract?","Partial or complete clouding of the lens; treated surgically by replacing the diseased lens with an artificial/plastic lens."]
+],must:["Eye layers: sclera/cornea, choroid/iris, retina.","Retina contains receptors; macula is sharpest vision; optic disc is blind spot.","Know lens accommodation and pupil reflex.","Myopia = concave lens; hypermetropia = convex lens.","Cataract = opaque lens; surgical treatment."]},
+
+{id:"1B",src:"Topic 1 exam paper",pts:20,title:"Plant characterisation — stinging nettle",figs:[
+["https://upload.wikimedia.org/wikipedia/commons/a/a2/Urtica_dioica_137787256.jpg","Stinging nettle, Urtica dioica","Stinging nettle. Image: Randal, CC0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Urtica_dioica_137787256.jpg","https://creativecommons.org/publicdomain/zero/1.0/"]
+],qs:[
+["Identify the likely plant and groups.","Stinging nettle, Urtica dioica. Angiosperm, dicotyledon."],
+["Visible dicot features?","Pinnate venation, perennial herbaceous habit, taproot system, characteristic flower, opposite leaves with stinging hairs, nutlet fruit."],
+["Ecological requirements?","Moist, mesic, nutrient-rich, slightly calcareous soil; nitrogen indicator."],
+["Typical habitat and use?","Neglected/disturbed areas near fences; cosmopolitan. Medicinal use: anti-inflammatory for joint problems and urinary difficulties."]
+],must:["Use an identification key: leaf arrangement, hairs, flower/fruit, venation.","Mention fence lines and disturbed nitrogen-rich places.","State medicinal use carefully, not as personal medical advice."]},
+
+{id:"2A",src:"Topic 2 exam paper",pts:30,title:"Aims, tools, and problems of nature conservation",qs:[
+["Aim of nature conservation?","To protect species, biological communities, biodiversity, habitats, landscapes and unique natural values."],
+["Legal, economic and educational tools?","Legal: prohibitions, conventions, protected status. Economic: compensation, subsidies, incentives. Educational: teaching, campaigns, awareness raising."],
+["Examples of active conservation?","Bird nest boxes, frog rescue, regular mowing, wetland flooding, zoo breeding and reintroduction, suppression of invasive species."],
+["Genetic dangers of small populations?","Inbreeding depression and irreversible random genetic changes; prevented by sufficiently large connected protected areas, ecological corridors and sometimes artificial breeding."],
+["Analyse a conflict case.","Describe the case, conservation damage, economic arguments, counterarguments, whose interest prevailed, your opinion and a compromise/solution."]
+],must:["Protect species, communities and unique values.","National parks and landscape protection areas preserve biodiversity.","Problems: invasive species, pollution, habitat destruction, economic conflicts.","Give concrete examples and solutions."]},
+
+{id:"2B",src:"Topic 2 exam paper",pts:20,title:"Comparison of moss and fern — maidenhair spleenwort",figs:[
+["https://upload.wikimedia.org/wikipedia/commons/1/14/Maidenhair_Spleenwort_%28Asplenium_trichomanes%29_-_geograph.org.uk_-_1380297.jpg","Maidenhair spleenwort, Asplenium trichomanes","Maidenhair spleenwort. Image: Björn S..., CC BY-SA 2.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Maidenhair_Spleenwort_(Asplenium_trichomanes)_-_geograph.org.uk_-_1380297.jpg","https://creativecommons.org/licenses/by-sa/2.0"],
+["https://upload.wikimedia.org/wikipedia/commons/4/40/Maidenhair_Spleenwort_-_Asplenium_trichomanes_%2827364059528%29.jpg","Back side of maidenhair spleenwort leaf with sori/sporangia","Maidenhair spleenwort leaf underside. Image: Björn S..., CC BY-SA 2.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Maidenhair_Spleenwort_-_Asplenium_trichomanes_(27364059528).jpg","https://creativecommons.org/licenses/by-sa/2.0"],
+["https://upload.wikimedia.org/wikipedia/commons/7/79/Moss_sporophyte_ferndale_park.jpg","Moss sporophytes","Moss sporophyte. Image via Wikimedia Commons; please verify exact attribution/licence on the file page before public redistribution.","https://commons.wikimedia.org/wiki/File:Moss_sporophyte_ferndale_park.jpg",""]
+],qs:[
+["Identify the fern.","Maidenhair spleenwort, Asplenium trichomanes."],
+["Why is it a fern?","It has true leaves and sporangia, but no flowers; spores are visible/used for reproduction."],
+["Ecological requirements?","Water requirement 6, heat 0, nitrogen not characteristic, disturbance tolerance 3; denizen of shady rock grasslands."],
+["Moss vs fern structure?","Mosses are thalloid and usually lack true tissues/organs. Ferns have tissues: epidermal, vascular and supporting tissues, plus true root, stem and leaf."],
+["Similarity in reproduction?","Both reproduce by spores and fertilisation is bound to water."],
+["Moss water adaptation and role?","Mosses are poikilohydric: dry out and later absorb many times their body mass in water. They bind precipitation water and reduce soil erosion."]
+],must:["Moss = no true vascular organs; fern = vascular plant.","Both need water for fertilisation.","Mosses help forest water retention and soil protection."]},
+
+{id:"3A",src:"Topic 3 exam paper",pts:30,title:"Circulatory system — structure, health, diseases",qs:[
+["Describe human circulation.","Closed circulatory system. Arteries carry blood from the heart and branch into capillaries; veins collect blood from capillaries and return it to the heart. Include heart structure, systemic circulation and pulmonary circulation."],
+["Risk factors for cardiovascular disease?","Stress, alcohol, nicotine, overnutrition, sedentary lifestyle, fatty/cholesterol-rich diet."],
+["What is myocardial infarction?","A coronary artery becomes blocked; part of the heart muscle dies from oxygen shortage. Large blockage can cause sudden death."],
+["Heart attack symptoms?","Sudden pressure around the heart, chest pain, shortness of breath, fear of death, possible loss of consciousness."],
+["Atherosclerosis causes and consequences?","Caused by stress, fatty cholesterol-rich diet, smoking and lack of exercise. Vessel walls become rigid and narrow; high blood pressure develops, mainly in systemic arteries."],
+["Prevention?","Avoid animal fats, prefer plant oils, manage stress, eat vegetables/fruits/low-fat dairy, avoid smoking, exercise regularly."]
+],must:["Know arteries, veins, capillaries and heart circuits.","Infarction = coronary blockage + heart muscle death.","Lifestyle prevention is a key oral-exam argument."]},
+
+{id:"3B",src:"Topic 3 exam paper",pts:20,title:"Plant characterisation — common dandelion",figs:[
+["https://upload.wikimedia.org/wikipedia/commons/d/d6/L%C3%B6wenzahn-ks-2011-01.jpg","Common dandelion, Taraxacum officinale","Common dandelion. Image: Kreuzschnabel, CC BY-SA 3.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:L%C3%B6wenzahn-ks-2011-01.jpg","https://creativecommons.org/licenses/by-sa/3.0"]
+],qs:[
+["Identify plant and groups.","Common dandelion, Taraxacum officinale. Angiosperm, dicotyledon."],
+["Visible characteristics?","Pinnate venation, taproot, capitulum flower head, pinnatifid leaves, cypsela fruit with pappus."],
+["Ecological requirements?","Moist mesic areas, nutrient-rich slightly calcareous soil, nitrogen indicator."],
+["Habitat and uses?","Neglected areas near fences. Medicinal: appetite stimulant, cholagogue, blood-sugar lowering, anti-atherosclerotic, anti-inflammatory."]
+],must:["Capitulum and pappus are high-value identification words.","Mention nitrogen-rich disturbed habitat."]},
+
+{id:"4A",src:"Topic 4 exam paper",pts:30,title:"Integumentary system — structure and protection of skin",qs:[
+["Role and layers of skin?","First line of defence. Layers: epidermis, dermis, hypodermis/subcutaneous layer."],
+["Functions of layers?","Epidermis protects against pathogens, desiccation, chemicals and radiation and has no blood vessels. Dermis handles thermoregulation and sensation and contains hair follicles, sebaceous and sweat glands. Hypodermis stores nutrients, insulates and protects mechanically."],
+["Three skin problems?","Warts: viral and contagious. Acne: increased sebum production. Fungal infection: fungi use epidermal keratin, often toes/nails; contagious, itchy/cracked/discoloured."],
+["Role of pigments?","Pigments give skin colour. Melanin in the lower epidermis absorbs UV radiation; sun exposure increases pigment production."],
+["Sun exposure pros and cons?","Benefit: vitamin D formation. Risk: strong UV damages DNA, causes mutations and can contribute to melanoma."],
+["Burn first aid?","Cool with cold tap water/cold compress; use pharmacy preparations for minor burns. Third-degree burns require medical attention."]
+],must:["Layers: epidermis, dermis, hypodermis.","Melanin protects from UV but excessive UV is dangerous.","Burn degrees: redness, blisters, deep necrosis/charring."]},
+
+{id:"4B",src:"Topic 4 exam paper",pts:20,title:"Blind spot experiment",qs:[
+["Where does the focused cross image fall?","On the yellow spot/macula lutea, the sharpest vision area."],
+["Where does the disappearing spot image fall?","On the blind spot/optic disc."],
+["Why does it disappear?","With one eye, an object whose image falls on the blind spot disappears because there are no receptors there."],
+["Why no problem in daily vision?","We use two eyes, and the cerebral cortex visually completes the image."],
+["Why is there a blind spot?","Ganglion-cell axons leave the eye there; it is the optic nerve exit point and has no receptors."]
+],must:["Macula = sharpest vision.","Blind spot = optic disc, no receptors.","Correct experiment execution gives practical points."]},
+
+{id:"5A",src:"Topic 5 exam paper",pts:30,title:"Digestive system and healthy nutrition",qs:[
+["Small intestine sections?","Duodenum, jejunum and ileum. In the duodenum stomach contents, bile and pancreatic juice enter."],
+["Bile?","Produced in the liver, stored in the gallbladder; emulsifies fats. Contains bile acids and breakdown products of red blood cells."],
+["Pancreatic juice?","Produced by the pancreas, an organ with dual secretion. Enzymes: trypsin, lipase, amylase and nucleases."],
+["Small intestine structure/function?","Glove-finger-like intestinal villi increase surface area; absorption occurs through epithelial cells."],
+["Healthy diet model and nutrients?","Use food pyramid or healthy eating plate. Nutrients: proteins, carbohydrates, fats, vitamins, minerals and water."],
+["Role of water and minerals?","Water is solvent, transport and reaction medium. Potassium supports muscle work and fluid balance. Iron is part of haemoglobin."]
+],must:["Duodenum receives bile and pancreatic juice.","Villi = absorption surface.","Nutrients include water and minerals, not only energy-providing nutrients."]},
+
+{id:"5B",src:"Topic 5 exam paper",pts:20,title:"Plant characterisation — elderberry",figs:[
+["https://upload.wikimedia.org/wikipedia/commons/6/63/Sambucus_nigra-fruit001.jpg","Elderberry fruit, Sambucus nigra","Elderberry fruit. Image: Agnieszka Kwiecień (Nova), CC BY-SA 3.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Sambucus_nigra-fruit001.jpg","https://creativecommons.org/licenses/by-sa/3.0"],
+["https://upload.wikimedia.org/wikipedia/commons/b/b6/Sambucus_nigra_2004_c.jpg","Elderberry flowers, Sambucus nigra","Elderberry flowers. Image: JeLuF, CC BY-SA 1.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Sambucus_nigra_2004_c.jpg","https://creativecommons.org/licenses/by-sa/1.0"]
+],qs:[
+["Identify plant and groups.","Elderberry, Sambucus nigra. Angiosperm, dicotyledon."],
+["Visible traits?","Pinnate venation, taproot system, compound leaves, serrate/dentate leaf margin."],
+["Ecological requirements?","Moist, mesic area; nutrient-rich soil; nitrogen indicator."],
+["Habitat and use?","Neglected areas, fences, forest edges. Inflorescence used for diaphoretic tea; berries rich in vitamins."]
+],must:["Compound leaves + serrate/dentate margin.","Forest edges and disturbed nutrient-rich habitats."]},
+
+{id:"6A",src:"Topic 6 exam paper",pts:30,title:"Immune system and health",qs:[
+["Health, antigens and immune system?","A healthy body resists infections and maintains self-identity. The immune system acts against antigens: chemically foreign molecules or organisms carrying them."],
+["Phagocytes?","They engulf pathogens by phagocytosis and can present antigens. Dead phagocytes and pathogens form pus."],
+["Lymphocytes?","They destroy pathogenic cells/infected self-cells or produce antibodies/immunoglobulins."],
+["Active vs passive immunisation?","Active immunisation stimulates the body to produce its own antibodies. Passive immunisation introduces antibodies made by another organism."],
+["Natural vs artificial immunisation?","Natural develops under natural conditions, e.g. maternal antibodies. Artificial uses an immunising agent introduced by vaccination."],
+["Semmelweis?","He identified the cause/transmission of puerperal fever using statistical mortality analysis and introduced disinfection/hygiene."],
+["Viruses vs bacteria treatment?","Antibiotics can work against bacteria but not viruses, because viruses lack independent metabolism."]
+],must:["Antigen = foreign molecule/marker.","Phagocytes and lymphocytes are core cells.","Vaccination: active/passive and natural/artificial.","Antibiotics do not treat viral infections."]},
+
+{id:"6B",src:"Topic 6 exam paper",pts:20,title:"Animal comparison — white stork and fire salamander",figs:[
+["https://upload.wikimedia.org/wikipedia/commons/d/dc/Wei%C3%9Fstorch_P1190401.jpg","White stork, Ciconia ciconia","White stork. Image: Fischer.H, CC BY-SA 4.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Wei%C3%9Fstorch_P1190401.jpg","https://creativecommons.org/licenses/by-sa/4.0"],
+["https://upload.wikimedia.org/wikipedia/commons/2/21/Benny_Trapp_S%C3%BCdspanischer_Feuersalamander_Salamandra_longirostris.jpg","Fire salamander, Salamandra species","Fire salamander. Image: Benny Trapp, CC BY 3.0, via Wikimedia Commons.","https://commons.wikimedia.org/wiki/File:Benny_Trapp_S%C3%BCdspanischer_Feuersalamander_Salamandra_longirostris.jpg","https://creativecommons.org/licenses/by/3.0"]
+],qs:[
+["Name the two animals.","White stork and fire salamander."],
+["Phylum and class?","Both are chordates/vertebrates. White stork: bird. Fire salamander: amphibian."],
+["Integument?","Stork: feathers, dry skin, scales on legs. Salamander: moist glandular skin."],
+["Respiration?","Stork: lungs with air-sac ventilation. Salamander: lungs plus important skin respiration."],
+["Reproduction and development?","Stork: internal fertilisation, amniotic eggs with hard shell, direct development. Salamander: larvae usually aquatic, metamorphosis."]
+],must:["Compare by criteria: name, phylum/class, skin, respiration, reproduction, development.","Bird adaptations differ from amphibian moist-skin dependence."]},
+
+{id:"7A",src:"Topic 7 exam paper",pts:30,title:"Respiratory system — structure and diseases",qs:[
+["Upper and lower respiratory tracts?","Upper: nasal cavity, pharynx. Lower: larynx, trachea, lungs, main bronchi, bronchi, bronchioles, alveoli."],
+["Lower tract function?","Larynx is cartilaginous and covered by epiglottis. Trachea has C-shaped cartilages. Main bronchi branch into bronchi and bronchioles. Alveoli have simple squamous epithelium and rich capillaries for gas exchange."],
+["Inhalation?","External intercostal muscles contract, ribs rise, thorax expands. Diaphragm contracts/flattens, lungs expand, air pressure falls, air flows in."],
+["Exhalation?","Usually passive: inspiratory muscles relax, ribs descend, diaphragm bulges upward, thoracic pressure increases, air flows out."],
+["Vital capacity?","Maximum volume exhaled after forced inhalation; average about 4–4.8 dm³. Exercise improves thorough ventilation and lung capacity."],
+["Common respiratory diseases?","Common cold, influenza, hay fever, asthma, pneumonia and tuberculosis."],
+["Arguments against smoking?","Smoking damages airways and lungs, increases disease risk, worsens gas exchange, harms fitness and exposes others to smoke."]
+],must:["Alveoli = gas exchange surface.","Breathing mechanics depend on thorax volume and pressure.","Vital capacity can improve with exercise.","List at least three diseases."]},
+
+{id:"7B",src:"Topic 7 exam paper",pts:20,title:"Plant characterisation — greater celandine",figs:[
+["https://upload.wikimedia.org/wikipedia/commons/b/bf/Greater_Celandine_%28Chelidonium_majus%29_-_Guelph%2C_Ontario_2020-04-08.jpg","Greater celandine, Chelidonium majus","Greater celandine. Image via Wikimedia Commons; verify exact attribution/licence on the file page before public redistribution.","https://commons.wikimedia.org/wiki/File:Greater_Celandine_%28Chelidonium_majus%29_-_Guelph,_Ontario_2020-04-08.jpg",""],
+["https://upload.wikimedia.org/wikipedia/commons/e/e3/Chelidonium_majus_180459577.jpg","Greater celandine flower, Chelidonium majus","Greater celandine. Image via Wikimedia Commons; verify exact attribution/licence on the file page before public redistribution.","https://commons.wikimedia.org/wiki/File:Chelidonium_majus_180459577.jpg",""]
+],qs:[
+["Identify plant and groups.","Greater celandine, Chelidonium majus. Angiosperm, dicotyledon."],
+["Visible traits?","Pinnate venation, taproot, 4-petalled flower, pinnatifid crenate hairy leaves, silique-like capsule, yellow latex in herbaceous stem."],
+["Ecological requirements?","T: deciduous forests; W: moderately mesic; R: calcareous soil; N: nitrogen-rich areas; Z: tolerates degradation well."],
+["Habitat and use?","Neglected areas near fences. Latex applied to warts; internally used traditionally for bile/stomach ailments."]
+],must:["Yellow latex is a key identification feature.","Mention T-W-R-N-Z values if asked."]},
+
+{id:"8A",src:"Topic 8 exam paper",pts:30,title:"Musculoskeletal system — structure, function, health",qs:[
+["Main components?","Passive system: bones support body, protect organs and participate in movement. Active system: muscles attach to bones and move them."],
+["Bone connections?","Movable joints, e.g. wrist. Immovable or less movable connections include skull sutures, fusion/synostosis in pelvic bone and intervertebral discs."],
+["Bone composition and age change?","Inorganic minerals give rigidity; organic protein/connective-tissue fibres give elasticity. Young bones have more organic matter; old bones have more inorganic matter, become brittle and heal harder."],
+["Common disorders/injuries?","Congenital hip dysplasia; acquired flat feet, scoliosis, osteoporosis; injuries: strain, sprain and dislocation."],
+["Prevention/correction?","Screening, proper shoes, foot and trunk strengthening, good posture, two-shoulder backpack, swimming/remedial gymnastics, calcium-rich food and regular activity."]
+],must:["Passive bones + active muscles.","Organic = elasticity; inorganic = rigidity.","Prevention: posture, exercise, calcium, suitable load."]},
+
+{id:"8B",src:"Topic 8 exam paper",pts:20,title:"Smog alert procedures",qs:[
+["Define smog.","In windless, front-free weather in large cities/industrial areas, soot and particulate matter accumulate with corrosive harmful compounds: smoke-fog."],
+["Types of smog?","Summer/Los Angeles type from exhaust pollutants. Winter/London type mainly from fossil-fuel combustion; linked with acid rain formation."],
+["Information threshold?","Inform sensitive groups and public; children, elderly and healthy people should avoid outdoor sports and intense breathing activities."],
+["Personal actions?","Wear a mask if needed, avoid outdoor sports and extensive ventilation, stay outdoors as little as possible; burning garden waste is prohibited."],
+["Alarm threshold actions?","Municipality may restrict traffic/open-air burning, shut polluting plants and temporarily make public transport free."]
+],must:["Health limit, information threshold, alarm threshold.","Summer photochemical vs winter smoke/fossil-fuel smog.","Know practical public-health behaviour."]},
+
+{id:"9A",src:"Topic 9 exam paper",pts:30,title:"Excretory system — structure and hygiene",qs:[
+["Function of excretion?","Removal of excess water and harmful metabolic by-products."],
+["Kidney structure and function?","Kidney includes renal cortex, medulla, renal pyramids and renal pelvis. Functional unit is the nephron. Urine forms from filtrate."],
+["Other urinary organs?","Ureters transport urine by peristalsis. Urinary bladder is muscular and distensible, storing urine. Urethra conducts urine out."],
+["Urine components?","Inorganic: mineral salts such as chlorides, sulphates and carbonates. Organic: urea and uric acid."],
+["What should not be in healthy urine?","Protein may indicate inflammation. Glucose may indicate diabetes."],
+["Why does urine composition vary?","To maintain ion balance, fluid balance and constant pH: homeostasis."],
+["Kidney stones?","Can form when urine pH changes and salts precipitate; may occur in kidney, ureter or bladder."]
+],must:["Nephron = functional kidney unit.","Ureters peristalsis, bladder storage, urethra exit.","Homeostasis explains urine variation.","Protein/glucose in urine are warning signs."]},
+
+{id:"9B",src:"Topic 9 exam paper",pts:20,title:"Hungarian national parks and Danube–Ipoly National Park",qs:[
+["List Hungary's national parks.","Hortobágy, Kiskunság, Bükk, Aggtelek, Fertő–Hanság, Danube–Drava, Körös–Maros, Balaton Uplands, Danube–Ipoly, Őrség."],
+["Danube–Ipoly NP territory?","Danube Bend, Visegrád Hills, Pilis Mountains, Börzsöny Mountains, Ipoly Valley and Szentendre Island."],
+["Key facts?","Founded in 1997. Area: 403.14 km². Emblem animal: Rosalia longicorn, Rosalia alpina. Highest point: Csóványos. Closest named part: Strázsa Hill."],
+["Special animals?","Eastern imperial eagle, Saker falcon, White-throated dipper, Brown trout, Fire salamander, Gortyna borelii lunata."],
+["Special plants and heritage?","Pilis flax, Black pasqueflower, Siberian iris, Black hellebore; built heritage includes Visegrád Castle and Solomon's Tower."]
+],must:["Be able to point to national parks on a map.","For local park: territory, founding, emblem species, habitats, species and built heritage."]},
+
+{id:"10A",src:"Topic 10 exam paper",pts:30,title:"Human reproductive system and family planning",qs:[
+["Ovary as endocrine gland?","Paired gonad producing eggs. From puberty, one egg usually matures cyclically. Maturing follicle produces oestrogen; corpus luteum produces progesterone."],
+["What regulates the cycle?","Hypothalamus establishes rhythm; anterior pituitary hormones regulate gonads: FSH, LH and prolactin/luteotropic hormone."],
+["Where and when fertilisation occurs?","After ovulation, around day 14, the egg enters the fallopian tube; sperm fertilise it there."],
+["Family planning by calendar method?","Based on timing intercourse around expected ovulation, usually days 10–17 if pregnancy is desired; not the most reliable contraception."],
+["Contraceptive methods and risks?","Withdrawal, condoms, hormonal pills, intrauterine devices, emergency contraception, abortion. Risks include hormonal imbalance and intrauterine irritation; condoms also reduce STI risk."]
+],must:["Hormones: oestrogen, progesterone, FSH, LH, prolactin.","Fertilisation normally in fallopian tube.","Mention risks and reliability differences responsibly."]},
+
+{id:"10B",src:"Topic 10 exam paper",pts:20,title:"Blood pressure and pulse measurement",qs:[
+["How to measure?","Use automated cuff professionally: sit calmly, cuff at heart level, follow device instructions, record systolic/diastolic pressure and pulse."],
+["After 20 squats, what changes?","Both blood pressure and pulse rate increase."],
+["Define blood pressure.","Hydrostatic pressure exerted by blood on vessel walls. We measure highest and lowest arterial values in systemic circulation."],
+["Systole and diastole?","Systolic upper value is pressure during left-ventricle contraction. Diastolic lower value is pressure between two left-ventricle contractions."],
+["Normal values?","Normal blood pressure about 120/80 mmHg. Pulse is heart contractions per minute, average 60–75 bpm."],
+["Oscillometric measurement?","Automated devices calculate values from pressure fluctuations accompanying cardiac contraction and relaxation."]
+],must:["Know measurement technique and interpretation.","Exercise raises pulse and blood pressure.","Hypertension = high blood pressure; hypotension = low blood pressure."]}
+];
+
+let current=topics[0].id,learned=JSON.parse(localStorage.bioLearned||"{}"),cardIndex=0,showAns=false,timerInt=null;
+const $=id=>document.getElementById(id);
+
+function topicById(id){return topics.find(t=>t.id===id)}
+function save(){localStorage.bioLearned=JSON.stringify(learned)}
+function updateProgress(){const n=topics.filter(t=>learned[t.id]).length;$("progText").textContent=`${n}/${topics.length}`;$("progBar").style.width=(100*n/topics.length)+"%"}
+function renderNav(){const q=$("search").value.toLowerCase();$("nav").innerHTML=topics.filter(t=>(t.id+" "+t.title+" "+t.must.join(" ")+" "+t.qs.flat().join(" ")).toLowerCase().includes(q)).map(t=>`<button class="topicBtn ${t.id===current?'active':''}" onclick="current='${t.id}';showAns=false;render()"><b>${t.id}</b> ${t.title} ${learned[t.id]?'✅':''}<small>${t.pts} points · ${t.src}</small></button>`).join("")}
+function note(){return `<p><span class="badge source">Source note</span> This topic summary is based on the uploaded oral exam topic document. The app is for exam preparation, not for medical diagnosis or treatment.</p>`}
+function topicFigures(t){if(!t.figs)return"";return `<div class="topicFigures">${t.figs.map(f=>`<figure class="topicFigure"><a href="${f[3]}" target="_blank" rel="noopener"><img src="${f[0]}" alt="${f[1]}" loading="lazy"></a><figcaption>${f[2]} ${f[4]?`<a href="${f[4]}" target="_blank" rel="noopener">Licence</a>.`:""} <a href="${f[3]}" target="_blank" rel="noopener">Wikimedia Commons file</a>.</figcaption></figure>`).join("")}</div>`}
+
+function renderLearn(t){
+return `<section class="card"><h2>${t.id}. ${t.title} <span class="badge source">${t.src}</span></h2><p><span class="badge">${t.pts} oral points</span><span class="badge">${t.id.endsWith("A")?"Theory topic":"Practical / ecology / species topic"}</span></p>${note()}${topicFigures(t)}<div class="grid"><div><h3>Exam questions and model answers</h3>${t.qs.map((qa,i)=>`<details ${i<2?"open":""}><summary>${i+1}. ${qa[0]}</summary><p>${qa[1]} <span class="source">${t.src}</span></p></details>`).join("")}</div><div><h3>Must-know checklist</h3><ul>${t.must.map(x=>`<li>${x} <span class="source">${t.src}</span></li>`).join("")}</ul><h3>Oral answer structure</h3><ol><li>Start with definitions and the system/function.</li><li>Use exact biological terms from the checklist.</li><li>Give examples, health/ecological relevance, or experimental interpretation.</li><li>Finish with prevention, conservation, or practical conclusion where relevant.</li></ol><button class="good" onclick="toggleLearned('${t.id}')">${learned[t.id]?'Marked learned ✓':'Mark this topic learned'}</button></div></div></section>${miniDiagrams(t.id)}`
+}
+
+function miniDiagrams(id){
+if(!["1A","3A","5A","7A","9A","10B"].includes(id))return"";
+const boxes={
+"1A":["Eye light path","Cornea → aqueous humour → pupil → lens → vitreous humour → retina","Accommodation","Near: ciliary muscle contracts; lens convex. Far: relaxes; lens flat.","Correction","Myopia: concave. Hypermetropia: convex."],
+"3A":["Closed circulation","Heart → arteries → capillaries → veins → heart","Pulmonary circuit","Right heart → lungs → left heart","Systemic circuit","Left heart → body → right heart"],
+"5A":["Small intestine","Duodenum → jejunum → ileum","Secretions","Bile emulsifies fat; pancreatic enzymes digest macromolecules","Absorption","Villi increase surface area"],
+"7A":["Inhalation","Thorax expands → pressure falls → air enters","Exhalation","Thorax volume falls → pressure rises → air exits","Alveoli","Thin epithelium + capillaries = gas exchange"],
+"9A":["Urine route","Kidney → ureter → bladder → urethra","Nephron","Forms filtrate and urine","Homeostasis","Water, ions and pH regulation"],
+"10B":["Blood pressure","Systole / diastole","Normal","About 120/80 mmHg","Pulse","About 60–75 bpm at rest"]
+}[id];
+return `<section class="card"><h3>Quick diagram</h3><div class="diagram">${[0,2,4].map(i=>`<div class="svgbox"><svg width="100%" height="70" viewBox="0 0 220 70"><rect x="5" y="10" width="210" height="50" rx="18" fill="#eaf7f1" stroke="#1f7a5c"/><text x="110" y="42" text-anchor="middle" font-size="16" fill="#123c69" font-weight="700">${boxes[i]}</text></svg><p>${boxes[i+1]}</p></div>`).join("")}</div></section>`
+}
+
+function allCards(){return topics.flatMap(t=>t.qs.map((qa,i)=>({tid:t.id,title:t.title,src:t.src,q:qa[0],a:qa[1],key:t.id+"-"+i})))}
+function renderFlash(){
+const cards=allCards(),c=cards[cardIndex%cards.length];
+return `<section class="card"><h2>Flashcards</h2><p><span class="badge">${c.tid}</span> ${c.title} <span class="badge source">${c.src}</span></p><div class="flash" onclick="showAns=!showAns;renderMainOnly()"><div class="q">${c.q}</div><div class="a ${showAns?'':'hidden'}">${c.a}</div><p class="${showAns?'hidden':''}">Click card to reveal answer.</p></div><p><button class="secondary" onclick="cardIndex=(cardIndex-1+${cards.length})%${cards.length};showAns=false;renderMainOnly()">Previous</button> <button onclick="showAns=!showAns;renderMainOnly()">Flip</button> <button class="secondary" onclick="cardIndex=(cardIndex+1)%${cards.length};showAns=false;renderMainOnly()">Next</button> <button class="good" onclick="learned['${c.tid}']=true;save();render()">I knew it</button></p></section>`
+}
+
+function renderOral(t){
+return `<section class="card"><h2>Mock oral exam: ${t.id}. ${t.title} <span class="badge source">${t.src}</span></h2>${topicFigures(t)}<div class="kpi"><div><b id="timer">05:00</b> timer</div><div><b>${t.pts}</b> points</div><div><b>${t.qs.length}</b> prompts</div><div><b>${learned[t.id]?'✓':'–'}</b> learned</div></div><h3>Your oral prompts</h3><ol>${t.qs.map(x=>`<li>${x[0]}</li>`).join("")}</ol><p><button onclick="startTimer(300)">Start 5-minute answer timer</button> <button class="secondary" onclick="startTimer(120)">Start 2-minute quick recap</button></p><h3>Self-check after speaking</h3>${t.must.map(x=>`<label style="display:block;margin:.45rem 0"><input type="checkbox"> ${x}</label>`).join("")}<textarea rows="5" style="width:100%" placeholder="Write what you forgot, useful phrases, or teacher feedback…"></textarea><p><button class="good" onclick="toggleLearned('${t.id}')">Mark practised / learned</button></p><details><summary>Show model answers</summary>${t.qs.map(qa=>`<p><b>${qa[0]}</b><br>${qa[1]}</p>`).join("")}</details></section>`
+}
+
+function renderOverview(){
+const a=topics.filter(t=>t.id.endsWith("A")),b=topics.filter(t=>t.id.endsWith("B"));
+return `<section class="card"><h2>Overview: Topics 1–10</h2><p>The material covers human biology systems, health, experimental tasks, plant/animal characterisation, ecology and nature conservation from the uploaded oral exam papers.</p><div class="grid"><div><h3>A theory topics — 30 points</h3><ol>${a.map(t=>`<li><b>${t.id}</b> ${t.title} <span class="source">${t.src}</span></li>`).join("")}</ol></div><div><h3>B practical/species/ecology topics — 20 points</h3><ol>${b.map(t=>`<li><b>${t.id}</b> ${t.title} <span class="source">${t.src}</span></li>`).join("")}</ol></div></div><h3>How to prepare efficiently</h3><ol><li>Read one A and one B topic per session.</li><li>Use flashcards until you can answer without looking.</li><li>Use mock oral mode and speak aloud with biological vocabulary.</li><li>For plant/animal topics, practise identification, taxonomy, visible traits, ecology, habitat and significance.</li><li>For human biology topics, always include structure, function, disorder/risk and prevention.</li></ol></section>`
+}
+
+function renderMainOnly(){const t=topicById(current),m=$("mode").value;$("main").innerHTML=m==="learn"?renderLearn(t):m==="flash"?renderFlash():m==="oral"?renderOral(t):renderOverview()}
+function render(){renderNav();updateProgress();renderMainOnly()}
+function toggleLearned(id){learned[id]=!learned[id];save();render()}
+function startTimer(sec){
+clearInterval(timerInt);
+const end=Date.now()+sec*1000;
+timerInt=setInterval(()=>{
+const left=Math.max(0,Math.ceil((end-Date.now())/1000)),mm=String(Math.floor(left/60)).padStart(2,"0"),ss=String(left%60).padStart(2,"0"),el=$("timer");
+if(el)el.textContent=`${mm}:${ss}`;
+if(left<=0){clearInterval(timerInt);alert("Time is up. Now self-check your answer.")}
+},250)
+}
+
+$("search").oninput=renderNav;
+$("mode").onchange=()=>{showAns=false;render()};
+$("randomBtn").onclick=()=>{current=topics[Math.floor(Math.random()*topics.length)].id;showAns=false;render()};
+$("resetBtn").onclick=()=>{if(confirm("Reset all learned-topic progress?")){learned={};save();render()}};
+render();
+</script>
+</body>
+</html>
